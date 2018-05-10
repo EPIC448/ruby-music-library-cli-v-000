@@ -1,8 +1,10 @@
 require 'pry'
+
 class Song
     attr_accessor  :name
-    attr_reader :artist, :genre
-    @@all = [ ]
+    attr_reader :artist, :genre #can only read
+
+    @@all = [ ] #class method
 
   def initialize(name, artist = nil, genre = nil)
       @name = name
@@ -13,6 +15,7 @@ class Song
           self.genre = genre
         end
     end
+
 
     def save
       @@all << self  # refers to the class artist
@@ -39,7 +42,6 @@ class Song
     end
 
     def genre=(genre)
-      # binding.pry
        @genre = genre
        genre.add_song(self)
     end
@@ -49,38 +51,45 @@ class Song
       end
 
 
-      def self.create(name)
-            song = self.new(name) #initiate new artist.
-            song.save  #reason for the save method
-            song
-      end
+      # ^^^^^^^ Every thing above applys to class of songs, genre, artist
 
-      def self.find_or_create_by_name(name)
-        #turn class string into an objects
-        # This is where we chain things togther
-         if self.find_by_name(name)
-            self.find_by_name(name)
-         else
-           self.create(name)
-         end
+
+
+       def self.create_from_filename(file_name)
+           self.new_from_filename(file_name).save
        end
 
        def self.new_from_filename(file_name)
 
             art_name = file_name.split(" - ")[0]
             song_name = file_name.split(" - ")[1]
-            genre_name = file_name.split(" - ")[2].gsub(".mp3","")
-            #  look for what file_name gives,  then split on that.
+            genre_name = file_name.split(" - ")[2].gsub(".mp3","") #remove the mp3
+            #  look for what file_name has,  then split on that.
             # targeting the songs which is the 2nd element in the array
              artist = Artist.find_or_create_by_name(art_name)
              genre = Genre.find_or_create_by_name(genre_name)
+
              new_song = self.new(song_name, artist, genre)
              #new_song.save  #use out save method.
              new_song
-       end
-
-       def self.create_from_filename(file_name)
-           self.new_from_filename(file_name).save
 
        end
+
+       def self.create(name)
+             song = self.new(name) #initiate new artist.
+             song.save  #reason for the save method
+             song
+       end
+
+       def self.find_or_create_by_name(name)
+         # aviod having duplicates
+         # This is where we chain things togther
+          if self.find_by_name(name)
+             self.find_by_name(name)
+          else
+            self.create(name)
+          end
+        end
+
+  # I STOPPED HERE..
   end

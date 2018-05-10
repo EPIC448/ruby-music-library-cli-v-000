@@ -2,9 +2,11 @@
 class MusicLibraryController
  attr_accessor :path, :files
 
-  def initialize(path ='./db/mp3s')
-    @path = path
-    musicimporter= MusicImporter.new(path)
+# inheret from db file name path(can do the same with you scraper)
+   def initialize(starter_path ='./db/mp3s')
+    @path = starter_path
+    #the MusicImporter is a class under lib
+    musicimporter= MusicImporter.new(@path)   #This is passed into the  MusicImporter in the initialize as arrguement
     musicimporter.import
    end
 
@@ -20,9 +22,11 @@ class MusicLibraryController
       puts "To list all of the songs of a particular genre, enter 'list genre'."
       puts "To play a song, enter 'play song'."
       puts "To quit, type 'exit'."
+
       input = gets.strip   # this is you CLI in the music_library_controller method
+
       if input == "list songs"
-        list_songs
+        list_songs  #check
       elsif input == "list artists"
         list_artists
       elsif input == "list genres"
@@ -83,6 +87,10 @@ class MusicLibraryController
       puts "Please enter the name of a genre:"
       input = gets.strip # get genre string
       genre = Genre.find_by_name(input)
+
+      # def self.find_by_name(name)
+      #      self.all.find {|x| x.name == name}
+      #  end
       genre
     if genre
       sorted_genres = genre.songs.sort_by{ |genre| genre.name }

@@ -44,6 +44,9 @@ class Artist
       @songs << song unless @songs.include?(song)  #unless song included in our collection.x
     end
 
+
+# ^^^^^^^ Every thing above applys to class of songs, genre, artist
+
     def genres
         # @songs.collect do |song|
         @songs.collect{ |song| song.genre}.uniq

@@ -30,9 +30,16 @@ attr_accessor :name, :songs
 
 
 
+
+
+
+
     def self.destroy_all
           @@all.clear
     end
+
+
+    # ^^^^^^^ Every thing above applys to class of songs, genre, artist
 
     def self.create(name)
          genre = Genre.new(name)
